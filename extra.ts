@@ -2,12 +2,10 @@ import { timber } from "./mod.ts";
 import {
   brightBlue,
   brightMagenta,
+  gray,
   red,
   yellow,
-  gray,
 } from "https://deno.land/std@0.110.0/fmt/colors.ts";
-
-export { timber };
 
 /** A debug log. */
 export const debug = timber({
