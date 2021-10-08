@@ -1,77 +1,58 @@
-import { brightBlue, brightMagenta, red, yellow } from "./deps.ts";
-
 type Level = {
-  /**
-   * The long name for the log level.
-   *
-   * Built-in levels include: `debug`, `info`, `warn`; and `error`.
-   */
+  /** The long name for the log level. */
   long: string;
-  /**
-   * A **single** character to represent the log level.
-   *
-   * Built-in levels include: `@` (`debug`), `?` (`info`), `~` (`warn`); and `!` (`error`).
-   */
+  /** A single character to represent the log level. */
   short?: string;
-  /**
-   * Used to color the log level.
-   *
-   * This respects `NO_COLOR` if it is used.
-   */
-  color?: (str: string) => string;
+  /** Used to style the log level. */
+  style?: (str: string) => string;
+};
+
+// coerces a `Level` into a `Required<Level>`
+const Level = (level: Level): Required<Level> => {
+  return {
+    long: level.long,
+    short: level.short?.charAt(0) ?? " ",
+    style: level.style ?? ((s: string) => s),
+  };
 };
 
 type Options = {
   /** Whether to use the long name instead of the short name. */
   long?: boolean;
-
   /** A string placed before the log level. */
   before?: string;
   /** A string placed after the log level. */
   after?: string;
-
   /** The function used to log the message. */
   logger?: (...data: unknown[]) => unknown;
+};
+
+// coerces a `Level` into a `Required<Level>`
+const Options = (options: Options): Required<Options> => {
+  return {
+    long: options.long ?? false,
+    before: options.before ?? "",
+    after: options.after ?? "",
+    logger: options.logger ?? console.log,
+  };
 };
 
 /** Creates a new logger. */
 export const timber = (
   level: Level,
-): ((message: string, opts?: Options) => unknown) => {
-  const LEVEL: Required<Level> = {
-    long: level.long,
-    short: level.short?.charAt(0) ?? " ",
-    color: level.color ?? ((str: string): string => str),
-  };
+): ((data: unknown, opts?: Options) => unknown) => {
+  const LEVEL = Level(level);
 
-  return (message: unknown, opts: Options = {}): unknown => {
-    const OPTS: Required<Options> = {
-      long: opts.long ?? false,
-
-      before: opts.before ?? "",
-      after: opts.after ?? "",
-
-      logger: opts.logger ?? console.log,
-    };
+  return (data: unknown, opts: Options = {}): unknown => {
+    const OPTS = Options(opts);
 
     return OPTS.logger(
-      `${OPTS.before ? OPTS.before + " " : ""}` +
-        `${LEVEL.color(`[${OPTS.long ? LEVEL.long : LEVEL.short}]`)}` +
-        `${OPTS.after ? " " + OPTS.after : ""}`,
-      message,
+      (
+        `${OPTS.before} ` +
+        `${LEVEL.style(`[${OPTS.long ? LEVEL.long : LEVEL.short}]`)} ` +
+        `${OPTS.after}`
+      ).trim(),
+      data,
     );
   };
 };
-
-/** A debug log. */
-export const debug = timber({
-  long: "debug",
-  short: "@",
-  color: brightMagenta,
-});
-/** An info log. */
-export const info = timber({ long: "info", short: "?", color: brightBlue });
-/** A warning log. */
-export const warn = timber({ long: "warn", short: "~", color: yellow });
-/** An error log. */
-export const error = timber({ long: "error", short: "!", color: red });
