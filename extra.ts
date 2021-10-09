@@ -5,6 +5,7 @@ import {
   gray,
   red,
   yellow,
+  green,
 } from "https://deno.land/std@0.110.0/fmt/colors.ts";
 
 /** A debug log. */
@@ -19,6 +20,9 @@ export const info = timber({ long: "info", short: "?", style: brightBlue });
 export const warn = timber({ long: "warn", short: "~", style: yellow });
 /** An error log. */
 export const error = timber({ long: "error", short: "!", style: red });
+
+/** A success log. */
+export const success = timber({ long: "success", short: "+", style: green });
 
 /** Creates a simple timestamp. */
 export const timestamp = (date?: Date, utc?: boolean): string => {
