@@ -3,26 +3,10 @@ import {
   brightBlue,
   brightMagenta,
   gray,
+  green,
   red,
   yellow,
-  green,
 } from "https://deno.land/std@0.110.0/fmt/colors.ts";
-
-/** A debug log. */
-export const debug = timber({
-  long: "debug",
-  short: "@",
-  style: brightMagenta,
-});
-/** An info log. */
-export const info = timber({ long: "info", short: "?", style: brightBlue });
-/** A warning log. */
-export const warn = timber({ long: "warn", short: "~", style: yellow });
-/** An error log. */
-export const error = timber({ long: "error", short: "!", style: red });
-
-/** A success log. */
-export const success = timber({ long: "success", short: "+", style: green });
 
 /** Creates a simple timestamp. */
 export const timestamp = (date?: Date, utc?: boolean): string => {
@@ -37,12 +21,37 @@ export const timestamp = (date?: Date, utc?: boolean): string => {
   const SECOND = utc ? DATE.getUTCSeconds() : DATE.getSeconds();
   const MILLISECOND = utc ? DATE.getUTCMilliseconds() : DATE.getMilliseconds();
 
-  return gray(
-    `[${YEAR}-${MONTH + 1}-${DAY} ${HOUR}:${MINUTE}:${SECOND}.${MILLISECOND}]`,
-  );
+  // deno-fmt-ignore
+  return `${YEAR}-${MONTH + 1}-${DAY} ${HOUR}:${MINUTE}:${SECOND}.${MILLISECOND}`;
 };
 
 /** Creates a simple tag. */
 export const tag = (tag: string): string => {
   return gray(`[${tag.slice(0, 5)}]`);
 };
+
+/** The debug logger. */
+export const debug = timber({
+  name: ["@", brightMagenta],
+  before: [`[${timestamp()}]`, gray],
+});
+/** The info logger. */
+export const info = timber({
+  name: ["?", brightBlue],
+  before: [`[${timestamp()}]`, gray],
+});
+/** The warn logger. */
+export const warn = timber({
+  name: ["~", yellow],
+  before: [`[${timestamp()}]`, gray],
+});
+/** The error logger. */
+export const error = timber({
+  name: ["!", red],
+  before: [`[${timestamp()}]`, gray],
+});
+/** The success logger. */
+export const success = timber({
+  name: ["+", green],
+  before: [`[${timestamp()}]`, gray],
+});

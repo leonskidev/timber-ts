@@ -1,58 +1,38 @@
-type Level = {
-  /** The long name for the log level. */
-  long: string;
-  /** A single character to represent the log level. */
-  short?: string;
-  /** Used to style the log level. */
-  style?: (str: string) => string;
+export type Logger = {
+  /**
+   * The name for this logger.
+   *
+   * Values for this may look like: `debug` / `@` or `error` / `!`.
+   */
+  name: string | [string, (str: string) => string];
+
+  /** Shown before the logger's `name` or `symbol`. */
+  before?: string | [string, (str: string) => string];
+  /** Shown after the logger's `name` or `symbol`. */
+  after?: string | [string, (str: string) => string];
+
+  /** The function called to log data. */
+  log?: (...data: unknown[]) => unknown;
 };
 
-// coerces a `Level` into a `Required<Level>`
-const Level = (level: Level): Required<Level> => {
-  return {
-    long: level.long,
-    short: level.short?.charAt(0) ?? " ",
-    style: level.style ?? ((s: string) => s),
-  };
-};
-
-type Options = {
-  /** Whether to use the long name instead of the short name. */
-  long?: boolean;
-  /** A string placed before the log level. */
-  before?: string;
-  /** A string placed after the log level. */
-  after?: string;
-  /** The function used to log the message. */
-  logger?: (...data: unknown[]) => unknown;
-};
-
-// coerces a `Level` into a `Required<Level>`
-const Options = (options: Options): Required<Options> => {
-  return {
-    long: options.long ?? false,
-    before: options.before ?? "",
-    after: options.after ?? "",
-    logger: options.logger ?? console.log,
-  };
+const style = (str: string | [string, (str: string) => string]): string => {
+  if (Array.isArray(str)) return str[1](str[0]);
+  return str;
 };
 
 /** Creates a new logger. */
-export const timber = (
-  level: Level,
-): ((data: unknown, opts?: Options) => unknown) => {
-  const LEVEL = Level(level);
+export const timber = (logger: Logger): ((...data: unknown[]) => unknown) => {
+  const name = Array.isArray(logger.name)
+    ? logger.name[1](`[${logger.name[0]}]`)
+    : logger.name;
+  const before = style(logger.before ?? "");
+  const after = style(logger.after ?? "");
+  const log = logger.log ?? console.log;
 
-  return (data: unknown, opts: Options = {}): unknown => {
-    const OPTS = Options(opts);
-
-    return OPTS.logger(
-      (
-        `${OPTS.before} ` +
-        `${LEVEL.style(`[${OPTS.long ? LEVEL.long : LEVEL.short}]`)} ` +
-        `${OPTS.after}`
-      ).trim(),
-      data,
+  return (...data: unknown[]): unknown => {
+    return log(
+      `${before} ${name} ${after}`.trim(),
+      ...data,
     );
   };
 };
