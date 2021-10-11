@@ -29,7 +29,7 @@ functions:
 import { info, timestamp } from "https://deno.land/x/timber/extra.ts";
 
 // this time we can use the pre-made logger with the timestamp helper
-info("hello, world!");
+info()("hello, world!");
 ```
 
 ## Licence
