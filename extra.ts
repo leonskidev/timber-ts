@@ -33,40 +33,40 @@ export const tag = (tag: string): string => {
 /** The debug logger. */
 export const debug = (logger: Partial<Logger> = {}) =>
   timber({
-    ...logger,
     name: ["@", brightMagenta],
     before: () => gray(`[${timestamp()}]`),
     log: console.debug,
+    ...logger,
   });
 /** The info logger. */
 export const info = (logger: Partial<Logger> = {}) =>
   timber({
-    ...logger,
     name: ["?", brightBlue],
     before: () => gray(`[${timestamp()}]`),
     log: console.info,
+    ...logger,
   });
 /** The warn logger. */
 export const warn = (logger: Partial<Logger> = {}) =>
   timber({
-    ...logger,
     name: ["~", yellow],
     before: () => gray(`[${timestamp()}]`),
     log: console.warn,
+    ...logger,
   });
 /** The error logger. */
 export const error = (logger: Partial<Logger> = {}) =>
   timber({
-    ...logger,
     name: ["!", red],
     before: () => gray(`[${timestamp()}]`),
     log: console.error,
+    ...logger,
   });
 /** The success logger. */
 export const success = (logger: Partial<Logger> = {}) =>
   timber({
-    ...logger,
     name: ["+", green],
     before: () => gray(`[${timestamp()}]`),
     log: console.log,
+    ...logger,
   });
