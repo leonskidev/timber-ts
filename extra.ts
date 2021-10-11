@@ -1,4 +1,4 @@
-import { timber, Logger } from "./mod.ts";
+import { Logger, timber } from "./mod.ts";
 import {
   brightBlue,
   brightMagenta,
@@ -31,37 +31,42 @@ export const tag = (tag: string): string => {
 };
 
 /** The debug logger. */
-export const debug = (logger: Partial<Logger> = {}) => timber({
-  ...logger,
-  name: ["@", brightMagenta],
-  before: () => gray(`[${timestamp()}]`),
-  log: console.debug,
-});
+export const debug = (logger: Partial<Logger> = {}) =>
+  timber({
+    ...logger,
+    name: ["@", brightMagenta],
+    before: () => gray(`[${timestamp()}]`),
+    log: console.debug,
+  });
 /** The info logger. */
-export const info = (logger: Partial<Logger> = {}) => timber({
-  ...logger,
-  name: ["?", brightBlue],
-  before: () => gray(`[${timestamp()}]`),
-  log: console.info,
-});
+export const info = (logger: Partial<Logger> = {}) =>
+  timber({
+    ...logger,
+    name: ["?", brightBlue],
+    before: () => gray(`[${timestamp()}]`),
+    log: console.info,
+  });
 /** The warn logger. */
-export const warn = (logger: Partial<Logger> = {}) => timber({
-  ...logger,
-  name: ["~", yellow],
-  before: () => gray(`[${timestamp()}]`),
-  log: console.warn,
-});
+export const warn = (logger: Partial<Logger> = {}) =>
+  timber({
+    ...logger,
+    name: ["~", yellow],
+    before: () => gray(`[${timestamp()}]`),
+    log: console.warn,
+  });
 /** The error logger. */
-export const error = (logger: Partial<Logger> = {}) => timber({
-  ...logger,
-  name: ["!", red],
-  before: () => gray(`[${timestamp()}]`),
-  log: console.error,
-});
+export const error = (logger: Partial<Logger> = {}) =>
+  timber({
+    ...logger,
+    name: ["!", red],
+    before: () => gray(`[${timestamp()}]`),
+    log: console.error,
+  });
 /** The success logger. */
-export const success = (logger: Partial<Logger> = {}) => timber({
-  ...logger,
-  name: ["+", green],
-  before: () => gray(`[${timestamp()}]`),
-  log: console.log,
-});
+export const success = (logger: Partial<Logger> = {}) =>
+  timber({
+    ...logger,
+    name: ["+", green],
+    before: () => gray(`[${timestamp()}]`),
+    log: console.log,
+  });
