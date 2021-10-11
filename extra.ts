@@ -1,4 +1,4 @@
-import { timber } from "./mod.ts";
+import { timber, Logger } from "./mod.ts";
 import {
   brightBlue,
   brightMagenta,
@@ -31,27 +31,37 @@ export const tag = (tag: string): string => {
 };
 
 /** The debug logger. */
-export const debug = timber({
+export const debug = (logger: Partial<Logger> = {}) => timber({
+  ...logger,
   name: ["@", brightMagenta],
-  before: [`[${timestamp()}]`, gray],
+  before: () => gray(`[${timestamp()}]`),
+  log: console.debug,
 });
 /** The info logger. */
-export const info = timber({
+export const info = (logger: Partial<Logger> = {}) => timber({
+  ...logger,
   name: ["?", brightBlue],
-  before: [`[${timestamp()}]`, gray],
+  before: () => gray(`[${timestamp()}]`),
+  log: console.info,
 });
 /** The warn logger. */
-export const warn = timber({
+export const warn = (logger: Partial<Logger> = {}) => timber({
+  ...logger,
   name: ["~", yellow],
-  before: [`[${timestamp()}]`, gray],
+  before: () => gray(`[${timestamp()}]`),
+  log: console.warn,
 });
 /** The error logger. */
-export const error = timber({
+export const error = (logger: Partial<Logger> = {}) => timber({
+  ...logger,
   name: ["!", red],
-  before: [`[${timestamp()}]`, gray],
+  before: () => gray(`[${timestamp()}]`),
+  log: console.error,
 });
 /** The success logger. */
-export const success = timber({
+export const success = (logger: Partial<Logger> = {}) => timber({
+  ...logger,
   name: ["+", green],
-  before: [`[${timestamp()}]`, gray],
+  before: () => gray(`[${timestamp()}]`),
+  log: console.log,
 });

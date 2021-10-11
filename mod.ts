@@ -7,9 +7,9 @@ export type Logger = {
   name: string | [string, (str: string) => string];
 
   /** Shown before the logger's `name` or `symbol`. */
-  before?: string | [string, (str: string) => string];
+  before?: () => string | [string, (str: string) => string];
   /** Shown after the logger's `name` or `symbol`. */
-  after?: string | [string, (str: string) => string];
+  after?: () => string | [string, (str: string) => string];
 
   /** The function called to log data. */
   log?: (...data: unknown[]) => unknown;
@@ -25,13 +25,13 @@ export const timber = (logger: Logger): ((...data: unknown[]) => unknown) => {
   const name = Array.isArray(logger.name)
     ? logger.name[1](`[${logger.name[0]}]`)
     : logger.name;
-  const before = style(logger.before ?? "");
-  const after = style(logger.after ?? "");
+  const before = logger.before ?? (() => "");
+  const after = logger.after ?? (() => "");
   const log = logger.log ?? console.log;
 
   return (...data: unknown[]): unknown => {
     return log(
-      `${before} ${name} ${after}`.trim(),
+      `${style(before())} ${name} ${style(after())}`.trim(),
       ...data,
     );
   };
