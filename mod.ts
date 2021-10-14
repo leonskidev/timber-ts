@@ -19,8 +19,10 @@ export const timber = <T>(
     log(
       (
         before.style?.(before.text()) ?? before.text() + " " +
-        name.style?.(name.text()) ?? name.text() + " " +
-        after.style?.(after.text()) ?? after.text()
+            name.style?.(name.text()) ??
+          name.text() + " " +
+            after.style?.(after.text()) ??
+          after.text()
       ).trim(),
       ...data,
     );

@@ -25,8 +25,8 @@ const info = timber({
 info("hello, world!");
 ```
 
-**Note**: *`name`, `before`, and `after`'s `text` field is a function so that it
-can be updated over time. This is useful for timestamps and other such stuff*.
+**Note**: _`name`, `before`, and `after`'s `text` field is a function so that it
+can be updated over time. This is useful for timestamps and other such stuff_.
 
 ### [`extra.ts`]
 
@@ -44,8 +44,8 @@ info("hello, world!");
 
 ## Licence
 
-This is licenced under **MIT**; you can find out more in the provided [`LICENCE`]
-file.
+This is licenced under **MIT**; you can find out more in the provided
+[`LICENCE`] file.
 
 [deno]: https://github.com/denoland/deno
 [`mod.ts`]: ./mod.ts

@@ -31,7 +31,7 @@ export const tag = (tag: string): string => {
 };
 
 /** The debug logger. */
-export const debug = (logger: Partial<TimberInit<void>> = {}) =>
+export const debug = <T>(logger: Partial<TimberInit<T>> = {}) =>
   timber({
     name: { text: () => "@", style: brightMagenta },
     before: { text: () => `[${timestamp()}]`, style: gray },
@@ -39,7 +39,7 @@ export const debug = (logger: Partial<TimberInit<void>> = {}) =>
     ...logger,
   });
 /** The info logger. */
-export const info = (logger: Partial<TimberInit<void>> = {}) =>
+export const info = <T>(logger: Partial<TimberInit<T>> = {}) =>
   timber({
     name: { text: () => "?", style: brightBlue },
     before: { text: () => `[${timestamp()}]`, style: gray },
@@ -47,7 +47,7 @@ export const info = (logger: Partial<TimberInit<void>> = {}) =>
     ...logger,
   });
 /** The warn logger. */
-export const warn = (logger: Partial<TimberInit<void>> = {}) =>
+export const warn = <T>(logger: Partial<TimberInit<T>> = {}) =>
   timber({
     name: { text: () => "~", style: yellow },
     before: { text: () => `[${timestamp()}]`, style: gray },
@@ -55,7 +55,7 @@ export const warn = (logger: Partial<TimberInit<void>> = {}) =>
     ...logger,
   });
 /** The error logger. */
-export const error = (logger: Partial<TimberInit<void>> = {}) =>
+export const error = <T>(logger: Partial<TimberInit<T>> = {}) =>
   timber({
     name: { text: () => "!", style: red },
     before: { text: () => `[${timestamp()}]`, style: gray },
@@ -63,7 +63,7 @@ export const error = (logger: Partial<TimberInit<void>> = {}) =>
     ...logger,
   });
 /** The success logger. */
-export const success = (logger: Partial<TimberInit<void>> = {}) =>
+export const success = <T>(logger: Partial<TimberInit<T>> = {}) =>
   timber({
     name: { text: () => "+", style: green },
     before: { text: () => `[${timestamp()}]`, style: gray },
