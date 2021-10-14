@@ -1,38 +1,27 @@
-export type Logger = {
-  /**
-   * The name for this logger.
-   *
-   * Values for this may look like: `debug` / `@` or `error` / `!`.
-   */
-  name: string | [string, (str: string) => string];
+export type TimberInit<T> = {
+  name: { text: () => string; style?: (str: string) => string };
 
-  /** Shown before the logger's `name` or `symbol`. */
-  before?: () => string | [string, (str: string) => string];
-  /** Shown after the logger's `name` or `symbol`. */
-  after?: () => string | [string, (str: string) => string];
+  before?: { text: () => string; style?: (str: string) => string };
+  after?: { text: () => string; style?: (str: string) => string };
 
-  /** The function called to log data. */
-  log?: (...data: unknown[]) => unknown;
+  log: (...data: unknown[]) => T;
 };
 
-const style = (str: string | [string, (str: string) => string]): string => {
-  if (Array.isArray(str)) return str[1](str[0]);
-  return str;
-};
+export const timber = <T>(
+  init: TimberInit<T>,
+): ((...data: unknown[]) => T) => {
+  const name = init.name;
+  const before = init.before ?? { text: () => "" };
+  const after = init.after ?? { text: () => "" };
+  const log = init.log;
 
-/** Creates a new logger. */
-export const timber = (logger: Logger): ((...data: unknown[]) => unknown) => {
-  const name = Array.isArray(logger.name)
-    ? logger.name[1](`[${logger.name[0]}]`)
-    : logger.name;
-  const before = logger.before ?? (() => "");
-  const after = logger.after ?? (() => "");
-  const log = logger.log ?? console.log;
-
-  return (...data: unknown[]): unknown => {
-    return log(
-      `${style(before())} ${name} ${style(after())}`.trim(),
+  return (...data: unknown[]): T =>
+    log(
+      (
+        before.style?.(before.text()) ?? before.text() + " " +
+        name.style?.(name.text()) ?? name.text() + " " +
+        after.style?.(after.text()) ?? after.text()
+      ).trim(),
       ...data,
     );
-  };
 };

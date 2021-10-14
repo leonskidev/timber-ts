@@ -2,39 +2,52 @@ _A **simple**, **tiny** logger for **[deno]** that **just works**._
 
 ## Usage
 
-One of the ways to use **timber** is with **just the core** by itself:
+There are two ways to use **timber**, either from scratch with just [`mod.ts`]
+or using some defaults provided by [`extra.ts`]. Most projects will only need
+what you can find in [`extra.ts`]; you can always create new loggers as and when
+needed.
 
-`./examples/core.ts`
+### [`mod.ts`]
 
 ```ts
-// you should add a version to this
-import { timber } from "https://deno.land/x/timber/mod.ts";
-// you don't need this, but it adds a bit of flavour to this example
-import { brightBlue } from "https://deno.land/std@0.110.0/fmt/colors.ts";
+// you'll want to add a version too this
+import { timber } from "https://deno.land/x/timber@vX.Y.Z/mod.ts";
+// we'll also use some colour to spice things up
+import { brightBlue } from "https://deno.land/std@0.111.0/fmt/colors.ts";
 
-// here we're creating an info logger
-const info = timber({ name: ["?", brightBlue] });
+// here we make a simple info logger
+const info = timber({
+  name: { text: () => "?", style: brightBlue },
+  log: console.info,
+});
 
-// this will use the logger and call `console.log` under the hood
+// and now we can use it whenever we would like
 info("hello, world!");
 ```
 
-Or you can use **the extras** which comes with pre-defined loggers and helper
-functions:
+**Note**: *`name`, `before`, and `after`'s `text` field is a function so that it
+can be updated over time. This is useful for timestamps and other such stuff*.
 
-`./examples/extra.ts`
+### [`extra.ts`]
 
 ```ts
-// you should add a version to this
-import { info, timestamp } from "https://deno.land/x/timber/extra.ts";
+// you'll want to add a version too this
+import { info as tInfo } from "https://deno.land/x/timber@vX.Y.Z/extra.ts";
 
-// this time we can use the pre-made logger with the timestamp helper
-info()("hello, world!");
+// the extras come with some settings that might not be to everyone's liking,
+// so you get to finish the config before you can use it
+const info = tInfo({ before: undefined });
+
+// and now we can use it whenever we would like
+info("hello, world!");
 ```
 
 ## Licence
 
-This project is licence under the **MIT Licence**. You can find out more in the
-provided `LICENCE` file.
+This is licenced under **MIT**; you can find out more in the provided [`LICENCE`]
+file.
 
 [deno]: https://github.com/denoland/deno
+[`mod.ts`]: ./mod.ts
+[`extra.ts`]: ./extra.ts
+[`LICENCE`]: ./LICENCE
