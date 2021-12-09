@@ -10,7 +10,7 @@ needed.
 ### [`mod.ts`]
 
 ```ts
-// you'll want to add a version too this
+// you'll want to add a version to this
 import { timber } from "https://deno.land/x/timber@vX.Y.Z/mod.ts";
 // we'll also use some colour to spice things up
 import { brightBlue } from "https://deno.land/std@0.111.0/fmt/colors.ts";
@@ -31,7 +31,7 @@ can be updated over time. This is useful for timestamps and other such stuff_.
 ### [`extra.ts`]
 
 ```ts
-// you'll want to add a version too this
+// you'll want to add a version to this
 import { info as tInfo } from "https://deno.land/x/timber@vX.Y.Z/extra.ts";
 
 // the extras come with some settings that might not be to everyone's liking,
